@@ -172,7 +172,11 @@ class _MyAppState extends State<MyApp> {
                                                   backgroundColor: Colors.green,
                                                 ),
                                                 SlidableAction(
-                                                  onPressed: (val) {},
+                                                  onPressed: (val) async {
+                                                    await Navigator.of(context)
+                                                        .pushNamed(MyRoutes.editContactPage, arguments: index);
+                                                    setState(() {});
+                                                  },
                                                   icon: Icons.edit,
                                                   backgroundColor: Colors.blue,
                                                 ),

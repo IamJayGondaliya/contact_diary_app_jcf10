@@ -3,6 +3,7 @@ import 'package:contact_diary_app_jcf10/views/components/my_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ContactDetailPage extends StatefulWidget {
   const ContactDetailPage({Key? key}) : super(key: key);
@@ -70,23 +71,48 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
                       print("=========================");
                     }
                   },
-                  child: const Icon(Icons.call),
                   backgroundColor: Colors.green,
+                  child: const Icon(Icons.call),
                 ),
                 FloatingActionButton(
-                  onPressed: () {},
-                  child: const Icon(Icons.email),
+                  onPressed: () async {
+                    Uri mail = Uri(
+                      scheme: 'mailto',
+                      query:
+                          "subject=This is demo mail&body=Dear ${Globals.allContacts[index].name},\n\tHere I've sent a demo mail from flutter testing software.",
+                      path: Globals.allContacts[index].email,
+                    );
+
+                    await launchUrl(mail);
+                  },
                   backgroundColor: Colors.red,
+                  child: const Icon(Icons.email),
                 ),
                 FloatingActionButton(
-                  onPressed: () {},
-                  child: const Icon(Icons.message),
+                  onPressed: () async {
+                    Uri sms = Uri(
+                      scheme: 'sms',
+                      query:
+                          "body=Dear ${Globals.allContacts[index].name},\n\tHere I've sent a demo mail from flutter testing software.",
+                      path: Globals.allContacts[index].contact,
+                    );
+
+                    await launchUrl(sms);
+                  },
                   backgroundColor: Colors.blue,
+                  child: const Icon(Icons.message),
                 ),
                 FloatingActionButton(
-                  onPressed: () {},
-                  child: const Icon(Icons.share),
+                  onPressed: () {
+                    // Share.share(
+                    //     "Name: ${Globals.allContacts[index].name}\nContact: ${Globals.allContacts[index].contact}\nEmail: ${Globals.allContacts[index].email}\n\nShared from ContactDiaryApp.");
+
+                    Share.shareXFiles([XFile(Globals.allContacts[index].image!.path)],
+                        text:
+                            "Name: ${Globals.allContacts[index].name}\nContact: ${Globals.allContacts[index].contact}\nEmail: ${Globals.allContacts[index].email}\n\nShared from ContactDiaryApp.");
+                  },
                   backgroundColor: Colors.orange,
+                  child: const Icon(Icons.share),
                 ),
               ],
             ),
